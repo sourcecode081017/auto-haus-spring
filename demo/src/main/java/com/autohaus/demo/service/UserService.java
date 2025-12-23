@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import com.autohaus.demo.dto.UserRegisterDTO;
 import com.autohaus.demo.dto.UserResponseDTO;
 import com.autohaus.demo.entity.User;
+import com.autohaus.demo.exception.EmailAlreadyExistsException;
+import com.autohaus.demo.exception.UserNotFoundException;
 import com.autohaus.demo.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -31,7 +33,7 @@ public class UserService {
 
         userRepository.findByEmail(dto.email())
                 .ifPresent(user -> {
-                    throw new RuntimeException("Email already exists");
+                    throw new EmailAlreadyExistsException("Email already exists");
                 });
 
         User user = User.builder()
@@ -55,7 +57,7 @@ public class UserService {
     public UserResponseDTO getById(Long id) {
 
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
 
         return new UserResponseDTO(
                 user.getId(),

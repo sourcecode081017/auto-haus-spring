@@ -32,4 +32,8 @@ public class UserController {
     public UserResponseDTO getUser(@PathVariable Long id) {
         return userService.getById(id);
     }
+    @GetMapping("/by-email/{email}")
+    public UserResponseDTO getUserByEmail(@PathVariable String email) {
+        return userService.getUserByEmail(email);
+    }
 }
